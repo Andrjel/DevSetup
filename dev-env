@@ -80,4 +80,4 @@ link "$DEV_ENV/dotfiles/.zshrc" "$HOME/.zshrc"
 link "$DEV_ENV/dotfiles/.zsh_profile" "$HOME/.zsh_profile"
 
 # copy fonts for i3 config
-update_files "$DEV_ENV/.fonts" "$HOME/.fonts"
+update_files "$DEV_ENV/dotfiles/.fonts" "$HOME/.fonts"
