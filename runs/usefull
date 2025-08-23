@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# git
+sudo apt-get install git
+
+# for i3 print screen shortcut
+sudo apt install maim
+sudo apt install xclip

@@ -1,56 +1,57 @@
 #!/usr/bin/env bash
+set -euo pipefail
+dry_run="0"
 
-script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-dry="0"
+if [ -z "${XDG_CONFIG_HOME:-}" ]; then
+    echo "no XDG_CONFIG_HOME variable"
+    echo "using ~/.config"
+    XDG_CONFIG_HOME=$HOME/.config
+fi
 
-while [[ $# > 0 ]]; do
-        if [[ $1 == "--dry" ]]; then
-                dry="1"
-        fi
-        shift
-done
+if [ -z "${DEV_ENV:-}" ]; then
+    echo "env var DEV_ENV needs to be present"
+    exit 1
+fi
+
+if [[ "${1:-}" == "--dry" ]]; then
+    dry_run="1"
+fi
 
 log() {
-        if [[ $dry == "1" ]]; then
-                echo "[DRY_RUN]: $@"
-        else
-                echo "$@"
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN]: $1"
+    else
+        echo "$1"
+    fi
+}
+
+link() {
+    src=$1
+    dst=$2
+
+    if [[ ! -e "$src" ]]; then
+        log "SKIPPING: source $src does not exist"
+        return
+    fi
+
+    if [[ -e "$dst" || -L "$dst" ]]; then
+        log "removing existing $dst"
+        if [[ $dry_run == "0" ]]; then
+            rm -rf "$dst"
         fi
+    fi
+
+    log "linking $src → $dst"
+    if [[ $dry_run == "0" ]]; then
+        ln -s "$src" "$dst"
+    fi
 }
 
+# link ~/.config
+for c in "$DEV_ENV/dotfiles/.config"/*; do
+    link "$c" "$XDG_CONFIG_HOME/$(basename "$c")"
+done
 
-execute() {
-        log "execute $@"
-        if [[ $dry = "1" ]]; then
-                return
-        fi
-        "$@"
-}
-
-log "--------------- dev-env ---------------"
-
-copy_dir() {
-	from=$1
-	to=$2
-
-	pushd $from > /dev/null
-	dirs=$(find . -mindepth 1 -maxdepth 1 -type d)
-	for dir in $dirs; do
-		execute rm -rf $to/$dir
-		execute cp -r $dir $to/$dir
-	done
-	popd > /dev/null
-}
-
-
-copy_file() {
-	from=$1
-	to=$2
-	name=$(basename $from)
-
-	execute rm $to/$name
-	execute cp $from $to/$name
-}
-
-copy_dir .config $HOME/.config
-
+# link shell stuff
+link "$DEV_ENV/dotfiles/.zshrc" "$HOME/.zshrc"
+link "$DEV_ENV/dotfiles/.zsh_profile" "$HOME/.zsh_profile"
