@@ -47,29 +47,6 @@ link() {
     fi
 }
 
-update_files() {
-    log "copying over files from: $1"
-    pushd $1 &> /dev/null
-    (
-        configs=`find . -mindepth 1 -maxdepth 1 -type d`
-        for c in $configs; do
-            directory=${2%/}/${c#./}
-            log "    removing: rm -rf $directory"
-
-            if [[ $dry_run == "0" ]]; then
-                rm -rf $directory
-            fi
-
-            log "    copying env: cp $c $2"
-            if [[ $dry_run == "0" ]]; then
-                cp -r ./$c $2
-            fi
-        done
-
-    )
-    popd &> /dev/null
-}
-
 # link ~/.config
 for c in "$DEV_ENV/dotfiles/.config"/*; do
     link "$c" "$XDG_CONFIG_HOME/$(basename "$c")"
@@ -80,4 +57,4 @@ link "$DEV_ENV/dotfiles/.zshrc" "$HOME/.zshrc"
 link "$DEV_ENV/dotfiles/.zsh_profile" "$HOME/.zsh_profile"
 
 # copy fonts for i3 config
-update_files "$DEV_ENV/dotfiles/.fonts" "$HOME/.fonts"
+cp -r "$DEV_ENV/dotfiles/.fonts" "$HOME/.fonts"

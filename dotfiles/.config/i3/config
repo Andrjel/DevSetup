@@ -146,7 +146,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # assign window to certain workspace
 # sample: assign [class="WM_CLASS_FROM_XPROP"] workspace_id
-assign [class="firefox_firefox"] $ws2
+assign [class="firefox"] $ws2
 assign [class="Gnome-terminal"] $ws1
 assign [class="Spotify"] $ws10
 

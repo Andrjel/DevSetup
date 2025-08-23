@@ -1,7 +1,7 @@
 # env variable
 export XDG_CONFIG_HOME=$HOME/.config
 export PERSONAL=$HOME/personal
-export DEV_ENV=$PERSONAL/dev-env
+export DEV_ENV=$PERSONAL/DevSetup
 export PATH="$DEV_ENV/scripts:$PATH"
 
 # aliasses

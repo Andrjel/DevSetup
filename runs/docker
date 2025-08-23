@@ -11,7 +11,6 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 # add docker group to manage docker without sudo 
 sudo groupadd docker
 sudo usermod -aG docker $USER
-newgrp docker
 
 # Add the repository to Apt sources:
 echo \
