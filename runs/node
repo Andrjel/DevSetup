@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+set -e  
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+if command -v nvm >/dev/null 2>&1; then
+  echo "✅ nvm już jest zainstalowany: $(nvm --version)"
+else
+  echo "⬇️ Instalacja nvm..."
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+fi
+
+if nvm ls 22 >/dev/null 2>&1; then
+  echo "✅ Node 22 już jest zainstalowany"
+else
+  echo "⬇️ Instalacja Node.js 22..."
+  nvm install 22
+fi
+
+nvm alias default 22
+nvm use 22
+
+echo "🔎 Aktualna wersja Node: $(node -v)"
+echo "🔎 Aktualna wersja npm: $(npm -v)"
+echo "🔎 Aktualna wersja nvm: $(nvm --version)"
