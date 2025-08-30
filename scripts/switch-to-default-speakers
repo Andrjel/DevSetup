@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+pactl set-card-profile 0 output:analog-stereo
