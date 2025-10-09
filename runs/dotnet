@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# .net SDK 8.0 -> LTS to 10-11-2026 
+apt-get update && \
+  sudo apt-get install -y dotnet-sdk-8.0
+# .net Runtime 8.0 -> LTS to 
+sudo apt-get update && \
+  sudo apt-get install -y aspnetcore-runtime-8.0
