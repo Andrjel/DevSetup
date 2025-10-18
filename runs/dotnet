@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
-# .net SDK 8.0 -> LTS to 10-11-2026 
-apt-get update && \
-  sudo apt-get install -y dotnet-sdk-8.0
-# .net Runtime 8.0 -> LTS to 
-sudo apt-get update && \
-  sudo apt-get install -y aspnetcore-runtime-8.0
+set -e
+
+# Dodanie repo Microsoftu
+wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+sudo apt-get update
+
+# Instalacja runtime (z APT)
+sudo apt-get install -y aspnetcore-runtime-9.0
+
+# Instalacja SDK (ze skryptu Microsoftu)
+wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+chmod +x dotnet-install.sh
+sudo ./dotnet-install.sh --channel 9.0 --install-dir /usr/share/dotnet
+sudo ln -sf /usr/share/dotnet/dotnet /usr/bin/dotnet
+
+# Weryfikacja
+dotnet --info
+
