@@ -8,5 +8,8 @@ export PATH="$DEV_ENV/scripts:$PATH"
 VIM="nvim"
 ls='ls --color=auto'
 
-# git
+# for dotnet
+export DOTNET_ROOT=/usr/share/dotnet
+export PATH=$PATH:$HOME/.dotnet/tools
+
 
