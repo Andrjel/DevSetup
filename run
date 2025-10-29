@@ -6,6 +6,12 @@ if [ -z "$DEV_ENV" ]; then
     exit 1
 fi
 
+# Aktualizacja systemu
+echo
+echo "[INFO] Aktualizacja pakietów systemowych..."
+sudo apt update -y && sudo apt upgrade -y
+
+
 # if i just did DEV_ENV=$(pwd) ./run then this is needed for the rest of the
 # scripts
 export DEV_ENV="$DEV_ENV"

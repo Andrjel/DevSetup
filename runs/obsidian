@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# ------------------------------
+# Skrypt instalujący Obsidian przez Snap na Ubuntu
+# ------------------------------
+
+set -e  # zatrzymaj skrypt, jeśli wystąpi błąd
+
+echo "==========================================="
+echo "  Instalator Obsidian (Snap) dla Ubuntu"
+echo "==========================================="
+echo
+
+# 1. Sprawdzenie, czy snapd jest zainstalowany
+if ! command -v snap >/dev/null 2>&1; then
+    echo "[INFO] Snap nie jest zainstalowany. Instaluję snapd..."
+    sudo apt install -y snapd
+else
+    echo "[OK] Snap jest już zainstalowany."
+fi
+
+# 2. Upewnienie się, że snap działa
+echo
+echo "[INFO] Upewniam się, że usługa snapd jest aktywna..."
+sudo systemctl enable --now snapd.socket
+sudo systemctl start snapd.socket
+
+# 3. Instalacja Obsidian
+echo
+echo "[INFO] Instalacja Obsidian przez Snap..."
+sudo snap install obsidian --classic
+
+# 4. Sprawdzenie instalacji
+echo
+if snap list | grep -q obsidian; then
+    echo "[SUKCES] Obsidian został pomyślnie zainstalowany!"
+    echo "Możesz uruchomić go poleceniem: obsidian"
+else
+    echo "[BŁĄD] Nie udało się zainstalować Obsidian."
+fi
+
+echo
+echo "==========================================="
+echo " Instalacja zakończona."
+echo "==========================================="
